@@ -5,9 +5,6 @@ start_time = datetime.now()
 
 def F(x):
     return 2 * (x[0] - 1) ** 2 + 100 * (x[1] + 10) ** 2
-
-
-
 def grad(func, x):
     return np.array(nd.Gradient(func)(x))
 
@@ -15,9 +12,8 @@ st = [-20, 10]
 eposh = 2000
 points= np.zeros((eposh, 2))
 points[0] = st
-# def WolfeConditions(x_k, f, grad, a1 = 1e-4, a2 = 0.9):
 
-def descentWithWolfe(x, f, grad,initial, a1 = 1e-4, a2 = 0.9, eps = 1e-5, maxIter = eposh - 1):
+def descentWithWolfe(x, f, grad, a1 = 1e-4, a2 = 0.9, eps = 1e-5, maxIter = eposh - 1):
     iter = 0
 
     while iter <= maxIter:
@@ -39,14 +35,12 @@ def descentWithWolfe(x, f, grad,initial, a1 = 1e-4, a2 = 0.9, eps = 1e-5, maxIte
         points[iter] = xk
     return x, iter
 
-result = descentWithWolfe(st, F, grad, [0, 1])
+result = descentWithWolfe(st, F, grad)
 print(result)
 import matplotlib.pyplot as plt
 
 filtered_points = points[~np.all(points == 0, axis=1)]
 X_estimate, Y_estimate = filtered_points[:, 0], filtered_points[:, 1]
-# print(X_estimate)
-# print(Y_estimate)
 Z_estimate = F(np.array([X_estimate, Y_estimate]))
 
 min_x0, min_x1 = np.meshgrid(result[0], result[1])

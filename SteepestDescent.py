@@ -5,7 +5,6 @@ import numpy as np
 def pretty_table(data, cell_sep=' | ', header_separator=True) -> str:
     rows = len(data)
     cols = len(data[0])
-
     col_width = []
     for col in range(cols):
         columns = [str(data[row][col]) for row in range(rows)]
@@ -61,13 +60,10 @@ def steepest_descent_with_dichotomy(f, grad_f, initial_x, initial_y, epsilon, ma
         p = x_new, y_new
         points[iteration] = p
         iteration += 1
-    print("iteration: ", iteration)
-    print("numOfFunc: ", numOfFunc)
     return p[0], p[1], iteration
 
 
 def F(x):
-    #return 2 * (x[0] - 1) ** 2 + 10 * (x[1] + 10) ** 2
     a = x[0] * xscale
     b = x[1] * yscale
     return 2 * (a - 1) ** 2 + 30 * (b + 10) ** 2
@@ -78,41 +74,16 @@ def grad(func, x):
 
 result = steepest_descent_with_dichotomy(F, grad, st[0], st[1], accuracy, eposh, np.array([0.01, 0.4]))
 print(result)
-#print(points)
 end = datetime.now() - start_time
-#print(end)
 import matplotlib.pyplot as plt
-
 filtered_points = points[~np.all(points == 0, axis=1)]
 X_estimate, Y_estimate = filtered_points[:, 0], filtered_points[:, 1]
-# print(X_estimate)
-# print(Y_estimate)
 Z_estimate = F(np.array([X_estimate, Y_estimate]))
-
 min_x0, min_x1 = np.meshgrid(result[0], result[1])
 min_z = F(np.stack([min_x0, min_x1]))
 t = np.linspace(-20, 20, 1000)
 X, Y = np.meshgrid(t, t)
 plt.contour(X, Y, F([X, Y]), levels=sorted([F(p) for p in filtered_points]))
 plt.plot(X_estimate, Y_estimate, '.-', color="r")
-
-# fig = plt.figure(figsize=(35, 35))
-# ax = fig.add_subplot(1, 2, 1, projection='3d')
-# t = np.linspace(-50, 50, 100)
-# X, Y = np.meshgrid(t, t)
-# ax.contour3D(X, Y, F(np.array([X, Y])), 60, cmap='viridis')
-# ax.plot(X_estimate, Y_estimate, '.-', color='red')
-# #ax.scatter(X_estimate, Y_estimate, F(np.array([X_estimate, Y_estimate])), marker='o', color='blue', linewidth=3)
-# ax.scatter(min_x0, min_x1, min_z, marker='o', color='red', linewidth=5)
-# ax.view_init(60, 180)
 plt.show()
-
-# t = np.linspace(-10, 10, 20)
-# X, Y = np.meshgrid(t, t)
-# ax = plt.figure().add_subplot(projection='3d')
-# ax.plot_surface(X, Y, F(np.array([X, Y])))
-# # plt.plot(ans[:, 0], ans[:, 1], 'o-')
-# # plt.contour(X, Y, F(X, Y), levels=sorted(F(p[0], p[1]) for p in ans))
-#
-# plt.show()
 

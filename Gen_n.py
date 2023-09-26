@@ -1,12 +1,6 @@
 import numpy as np
 from datetime import datetime
-
-import numpy.array_api
-
 start_time = datetime.now()
-
-
-# vec - array of coefficients
 def gen_vector(n, k):
     vec = np.random.uniform(1, k, n)
     vec[0] = 1
@@ -54,16 +48,8 @@ def steepest_descent_with_dichotomy(n, f, grad_f, initial, epsilon, max_iteratio
         iteration += 1
 
     return iteration
-
-
-# print(steepest_descent_with_dichotomy(random_fun, grad_random_fun, initial, 0.00001, 50000, [0.001, 0.4]))
-
-# n = [2, 5, 10, 25, 50, 100, 200, 350, 500, 750, 1000]
-# k = [1, 5, 10, 50, 100, 250, 375, 500, 750, 1000]
 n = [2, 5, 10, 25, 50, 100, 250, 500, 1000]
 k = [1, 5, 10, 50, 100, 250, 500, 900]
-#n = [2, 1]
-#k = [1, 2]
 maxItr = 100
 bounds = [0, 0.4]
 epsilon = 0.01
@@ -77,12 +63,10 @@ def Gr_m(initial, F, grad_f, vec, n, eps, alpha, max_iteration):
     while np.linalg.norm(X - X_prev) > eps:
         X_prev = X.copy()
         i = i + 1
-        #print(i, ":", X)
         X = X_prev - alpha * grad_f(n, X_prev, vec.copy())  # Формула
         iteration += 1
         if iteration > max_iteration:
             return iteration
-    print("Iteration:", iteration)
     return iteration
 def descentWithWolfe(initial, F, grad_f, vec, n, a1 = 1e-4, a2 = 0.9, eps = 1e-2, maxIter = 1000,):
     iter = 0
@@ -90,7 +74,6 @@ def descentWithWolfe(initial, F, grad_f, vec, n, a1 = 1e-4, a2 = 0.9, eps = 1e-2
     while iter <= maxIter:
         gradient = grad_f(n, x, vec.copy())
         alpha = 1
-
         while True:
             xk = x - alpha * gradient
             if F(n, xk, vec.copy()) <= F(n, x, vec.copy()) + a1 * alpha * gradient.T @ (-gradient):
@@ -111,9 +94,6 @@ for i in n:
         avg_res = 0
         for step in range(5):
             vec = gen_vector(i, j)
-            # avg_res += steepest_descent_with_dichotomy(i, random_fun, grad_random_fun, initial, epsilon,
-            #                                            maxItr, bounds, vec)
-            #avg_res += Gr_m(initial, random_fun, grad_random_fun, vec, i, epsilon, 0.001, maxItr)
             avg_res += descentWithWolfe(initial, random_fun, grad_random_fun, vec, i)
         result.append(np.hstack((i, j, avg_res / 5)))
     table.append(np.array(result))
